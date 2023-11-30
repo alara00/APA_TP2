@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import pickle
 from matplotlib import pyplot
-import statsmodels
+
 #%%
 with open('sarimax_model.pickle', 'rb') as model:
     modelo = pickle.load(model)
