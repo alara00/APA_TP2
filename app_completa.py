@@ -13,9 +13,9 @@ st.title('Prediccion de volumen de equipos')
 
 df = pd.read_excel('LPG 28-11 [RE-GEO].xlsx')
 
-inicio = st.date_input('Fecha Inicio', value = datetime.strptime("20231101", "%Y%m%d"), min_value = datetime.strptime("20231101", "%Y%m%d"), format= "YYYY-MM-DD")
-fin = st.date_input('Fecha Fin', value = datetime.strptime("20231102", "%Y%m%d"), min_value = datetime.strptime("20231102", "%Y%m%d"), max_value = datetime.strptime("20231231", "%Y%m%d"), format= "YYYY-MM-DD")
-dif = int((fin - inicio).days)
+inicio = st.date_input('Fecha Inicio', value = None, min_value = datetime.strptime("20231101", "%Y%m%d"), format= "YYYY-MM-DD")
+fin = st.date_input('Fecha Fin', value = None, min_value = datetime.strptime("20231102", "%Y%m%d"), max_value = datetime.strptime("20231231", "%Y%m%d"), format= "YYYY-MM-DD")
+
 #%%
 # Definir la fecha inicial
 fecha_inicial = datetime(2023, 11, 1)
@@ -33,21 +33,10 @@ dfdias['semana_del_año'] = dfdias.index.isocalendar().week.astype('int')
 dfdias['mes'] = dfdias.index.month.astype('int')
 #%%
 # Obtener las predicciones para el conjunto de prueba
-predicciones = modelo.get_forecast(start=inicio, end=fin, exog=dfdias[['dia_de_la_semana', 'semana_del_año', 'mes']])
+if inicio == None:
+    predicciones = modelo.get_forecast(start="2023-11-01", end="2023-12-01", exog=dfdias[['dia_de_la_semana', 'semana_del_año', 'mes']])
+else:
+    predicciones = modelo.get_forecast(start=inicio, end=fin, exog=dfdias[['dia_de_la_semana', 'semana_del_año', 'mes']])
+    
 pyplot.plot(predicciones.predicted_mean, color='red')
 pyplot.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
